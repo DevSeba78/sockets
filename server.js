@@ -5,7 +5,7 @@ let {Server: HttpServer} = require('http');
 let app = express();
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
-//io.init();
+
 let mensajes = [];
 let backUp = "";
 
@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 
 
 io.on('connection', (socket) => {
-    //console.log(mensajes);
+    
     socket.on('chat', (data) => {
         
         let res = {
@@ -35,15 +35,7 @@ io.on('connection', (socket) => {
     socket.emit('sala', mensajes);
     
     console.log(`a new user connected ${socket.id}`);
-    // socket.on('notification', (data) => {
-    //     backUp = data;
-    //     mensajes.push({socketId: socket.id, mensaje: data});
-    //     io.sockets.emit('message', mensajes);
-    //     console.log('desde el servidor', backUp);
-    //     console.log(mensajes);
-    // })
-    //socket.emit('sala', backUp);
+  
 });
 
 httpServer.listen(3000, () => console.log('listening on port 3000'));
-//httpServer.listen(3000, () => console.log('listening on port 3000'));

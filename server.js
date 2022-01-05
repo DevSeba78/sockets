@@ -18,19 +18,32 @@ app.use(express.static('./public'));
 app.get('/', (req, res) => {
     res.sendFile('index.html', {root: __dirname});
 })
-httpServer.listen(3000, () => console.log('listening on port 3000'));
+
 
 io.on('connection', (socket) => {
-    console.log(`a user connected ${socket.id}`);
-    console.log(mensajes);
-    socket.on('notification', (data) => {
-        backUp = data;
-        mensajes.push({socketId: socket.id, mensaje: data});
-        io.sockets.emit('message', mensajes);
+    //console.log(mensajes);
+    socket.on('chat', (data) => {
+        
+        let res = {
+            id: socket.id,
+            mensaje: data
+        }
+        mensajes.push(res);
         console.log(data);
+        io.sockets.emit('listenServer', mensajes);
     })
-    socket.emit('sala', backUp);
+    socket.emit('sala', mensajes);
+    
+    console.log(`a new user connected ${socket.id}`);
+    // socket.on('notification', (data) => {
+    //     backUp = data;
+    //     mensajes.push({socketId: socket.id, mensaje: data});
+    //     io.sockets.emit('message', mensajes);
+    //     console.log('desde el servidor', backUp);
+    //     console.log(mensajes);
+    // })
+    //socket.emit('sala', backUp);
 });
 
-
+httpServer.listen(3000, () => console.log('listening on port 3000'));
 //httpServer.listen(3000, () => console.log('listening on port 3000'));

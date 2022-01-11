@@ -19,12 +19,12 @@ class Socket {
 
                 socket.on('chat', (data) => {
                     
-                    let res = {
-                        id: socket.id,
-                        mensaje: data
-                    }
-                    this.mensajes.push(res);
-                    console.log(data);
+                    // let res = {
+                    //     id: socket.id,
+                    //     ...data
+                    // }
+                    this.mensajes.push(data);
+                    console.log('chat', data);
                     this.io.sockets.emit('listenServer', this.mensajes);
                 })
                 socket.on('addUser', (data) => {

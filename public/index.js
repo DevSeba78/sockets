@@ -1,7 +1,11 @@
 let input = document.getElementById("inputSocket");
 let parrafo = document.getElementById("description");
-let boton = document.getElementById("enviar");
+let btn = document.getElementById("send");
 let formDataUser = document.getElementById("dataUser");
+let nameUser = document.getElementById("nameUser");
+let emailUser = document.getElementById("emailUser");
+let boton = document.getElementById("enviar");
+let container_chat = document.getElementById("containerChat");
 let student = null;
 
 const socket = io.connect();
@@ -25,24 +29,28 @@ socket.on('listenServer', data => {
     });
     parrafo.innerHTML = inner;
 });
+socket.on('loadUsers', data => {
+    console.log('loads', data)
+    
+});
 
 formDataUser.addEventListener('submit', (e) => {
+    console.log(`click`);
     e.preventDefault();
     student = {
-        name: e.target[0].value,
-        email: e.target[1].value
+        name: nameUser.value,
+        email: emailUser.value
     }
+    //console.log(student)
     if (student.name === '' || student.email === '') {
         alert('No puede dejar campos vacios');
         window.location.reload();
-    } 
+    }
+    //socket = io(); 
     socket.emit('addUser', student);
+    container_chat.classList = "active";
 
-    // let data = {
-    //     name: input.value
-    // }
-    // socket.emit('addUser', data);
-    // input.value = '';
+    
 })
 
 boton.addEventListener(`click`, (e) => {
